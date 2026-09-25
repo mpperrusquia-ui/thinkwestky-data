@@ -34,7 +34,7 @@
       case 'percent': return `${v.toFixed(1)}%`;
       case 'dollars': return `$${Math.round(v).toLocaleString('en-US')}`;
       case 'years': return v.toFixed(1);
-      case 'ratio': return `${v.toFixed(1)} to 1`;
+      case 'ratio': return v.toFixed(1);
       case 'fte': return v.toLocaleString('en-US', { maximumFractionDigits: 1 });
       default: return Math.round(v).toLocaleString('en-US');
     }
@@ -59,16 +59,23 @@
   function asOf(metrics, extra = '') {
     const seen = new Map();
     for (const m of metrics.filter(Boolean)) {
-      const period = m.unit === 'students' || m.unit === 'fte' || m.unit === 'ratio' ? `${schoolYear(m.period)} school year` : fmtPeriod(m.period);
-      const k = `${m.source}|${period}`;
-      if (!seen.has(k)) seen.set(k, { source: m.source, url: m.source_url, period, notes: new Set(), stale: false });
-      const e = seen.get(k);
-      if (m.note && m.note === 'preliminary') e.notes.add('preliminary');
+      if (!seen.has(m.source)) seen.set(m.source, { source: m.source, url: m.source_url, periods: new Set(), notes: new Set(), stale: false });
+      const e = seen.get(m.source);
+      e.periods.add(m.period);
+      if (m.unit === 'students' || m.unit === 'fte' || m.unit === 'ratio') e.school = true;
+      if (m.note === 'preliminary') e.notes.add('preliminary');
       if (m.stale) e.stale = true;
     }
     if (!seen.size) return '';
+    const periodText = (e) => {
+      const ps = [...e.periods].sort();
+      if (e.school) return `${ps.map(schoolYear).join(' and ')} school year${ps.length > 1 ? 's' : ''}`;
+      // A run of annual periods collapses to a range: 2020–2025.
+      if (ps.length > 1 && ps.every((p) => /^\d{4}$/.test(p))) return `${ps[0]}–${ps[ps.length - 1]}`;
+      return ps.map(fmtPeriod).join(', ');
+    };
     const parts = [...seen.values()].map((e) =>
-      `<a href="${esc(e.url)}">${esc(e.source)}</a>, ${esc(e.period)}${e.notes.size ? ` (${[...e.notes].join(', ')})` : ''}${e.stale ? ' <span class="stale-tag">Not updated</span>' : ''}`);
+      `<a href="${esc(e.url)}">${esc(e.source)}</a>${e.source.includes(periodText(e)) ? '' : `, ${esc(periodText(e))}`}${e.notes.size ? ` (${[...e.notes].join(', ')})` : ''}${e.stale ? ' <span class="stale-tag">Not updated</span>' : ''}`);
     return `<p class="asof"><span class="asof-label">Source:</span> ${parts.join('; ')}.${extra ? ` ${extra}` : ''}</p>`;
   }
 
@@ -78,7 +85,7 @@
   function table({ id, caption, head, rows, csv, csvName }) {
     const thead = `<tr>${head.map((h, i) => `<th scope="col"${i ? ' class="num"' : ''}>${esc(h)}</th>`).join('')}</tr>`;
     const tbody = rows.map((r) =>
-      `<tr><th scope="row">${esc(r.label)}</th>${r.cells.map((c) => `<td class="num">${typeof c === 'string' ? esc(c) : cell(c)}</td>`).join('')}</tr>`).join('');
+      `<tr><th scope="row">${esc(r.label)}${r.sub ? `<span class="sub">${esc(r.sub)}</span>` : ''}</th>${r.cells.map((c) => `<td class="num">${typeof c === 'string' ? esc(c) : cell(c)}</td>`).join('')}</tr>`).join('');
     csvStore[id] = { rows: csv, name: csvName };
     return `<div class="table-block">
       <div class="table-scroll"><table id="${id}">
@@ -164,7 +171,7 @@
     const html = table({
       id: 't-history',
       caption: 'Unemployment rate, annual average',
-      head: ['Year', 'Fulton County', 'Hickman County', 'Kentucky', 'U.S.'],
+      head: ['Year', 'Fulton Co.', 'Hickman Co.', 'Kentucky', 'U.S.'],
       rows,
       csv,
       csvName: 'unemployment-rate-annual',
@@ -207,7 +214,7 @@
     if (!DISTRICTS.some((d) => get(d, 'enrollment'))) return empty;
     const rows = DISTRICTS.map((d) => {
       const e = get(d, 'enrollment');
-      return { label: d.name, cells: [e ? `${schoolYear(e.period)}` : '—', e, get(d, 'teachers_fte'), get(d, 'student_teacher_ratio')] };
+      return { label: d.name.replace(/ Schools$/, ''), sub: e ? `${schoolYear(e.period)} school year` : '', cells: [e, get(d, 'teachers_fte'), get(d, 'student_teacher_ratio')] };
     });
     const csv = DISTRICTS.flatMap((d) => [
       ['enrollment', 'Enrollment'], ['teachers_fte', 'Teachers (FTE)'], ['student_teacher_ratio', 'Students per teacher'],
@@ -215,7 +222,7 @@
     const html = table({
       id: 't-schools',
       caption: 'Public school districts',
-      head: ['District', 'School year', 'Enrollment', 'Teachers (FTE)', 'Students per teacher'],
+      head: ['District', 'Students enrolled', 'Teachers (FTE)', 'Students per teacher'],
       rows,
       csv,
       csvName: 'school-districts',
@@ -228,8 +235,11 @@
   const SVGNS = 'http://www.w3.org/2000/svg';
 
   function chart(years, get) {
-    const W = 640, H = 300;
-    const pad = { t: 16, r: 92, b: 32, l: 40 };
+    // Draw at the real on-screen width so 12px text stays 12px on phones.
+    const avail = document.querySelector('[data-render="history"]')?.clientWidth || 640;
+    const W = Math.round(Math.max(300, Math.min(640, avail)));
+    const H = W < 500 ? 240 : 300;
+    const pad = { t: 16, r: 108, b: 32, l: 36 };
     const vals = years.flatMap((y) => SERIES.map((s) => get(s.key, y)?.value)).filter((v) => v != null);
     if (!vals.length) return '';
     const yMax = Math.max(2, Math.ceil(Math.max(...vals) / 2) * 2);
@@ -270,10 +280,10 @@
 
     const legend = SERIES.map((s) => `<li><svg width="22" height="10" aria-hidden="true"><line x1="1" x2="21" y1="5" y2="5" stroke="${s.color}" stroke-width="2.5"${s.dash ? ` stroke-dasharray="4 3"` : ''}/></svg>${esc(s.name)}</li>`).join('');
 
-    return `<figure class="chart" data-years='${esc(JSON.stringify(years))}'>
+    return `<figure class="chart" data-years='${esc(JSON.stringify(years))}' data-w="${W}" data-l="${pad.l}" data-r="${pad.r}">
       <ul class="legend" aria-hidden="true">${legend}</ul>
       <div class="chart-box">
-        <svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="chart-title chart-desc" preserveAspectRatio="xMidYMid meet">
+        <svg class="plot" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="chart-title chart-desc" preserveAspectRatio="xMidYMid meet">
           <title id="chart-title">Annual unemployment rate, ${first}–${lastYr}</title>
           <desc id="chart-desc">Line chart. ${esc(summary)}. Every value is in the table below.</desc>
           ${grid}${xTicks}
@@ -291,11 +301,11 @@
     const fig = root.querySelector('figure.chart');
     if (!fig) return;
     const years = JSON.parse(fig.dataset.years);
-    const svg = fig.querySelector('svg');
+    const svg = fig.querySelector('svg.plot');
     const tip = fig.querySelector('.tooltip');
     const cross = svg.querySelector('.crosshair');
     const hit = svg.querySelector('.hit');
-    const W = 640, padL = 40, padR = 92;
+    const W = +fig.dataset.w, padL = +fig.dataset.l, padR = +fig.dataset.r;
     const xAt = (i) => padL + (years.length === 1 ? 0 : (i * (W - padL - padR)) / (years.length - 1));
 
     const show = (clientX) => {
@@ -384,6 +394,16 @@
 
   window.addEventListener('beforeprint', () => {
     document.querySelector('.site-footer').dataset.printed = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  });
+
+  // Redraw the chart when the available width changes (rotation, resize).
+  let lastWidth = 0;
+  window.addEventListener('resize', () => {
+    const w = document.querySelector('[data-render="history"]')?.clientWidth || 0;
+    if (Math.abs(w - lastWidth) < 24) return;
+    lastWidth = w;
+    clearTimeout(window.__chartTimer);
+    window.__chartTimer = setTimeout(render, 150);
   });
 
   load();
