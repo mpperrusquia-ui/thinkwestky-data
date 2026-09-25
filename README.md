@@ -20,19 +20,19 @@ It can be installed as an app on a phone ("Add to Home Screen") and works offlin
 
 ## Accounts and access
 
-All accounts belong to the EDP, not to any individual. They should be created
-with an EDP-controlled email address, such as `director@thinkwestky.org`, so the
-project isn't lost when people change jobs.
+The code lives on the GitHub account `mpperrusquia-ui`, which maintains the
+project. Hosting and API-key accounts should use an EDP-controlled email address,
+such as `director@thinkwestky.org`, so the EDP can always reach the live site.
 
 | What | Where | Account holder | Notes |
 |---|---|---|---|
-| Code + monthly job | GitHub, `github.com/<org>/thinkwestky-data` | _fill in_ | Holds the code, the refresh schedule, and the API keys (as secrets) |
+| Code + monthly job | GitHub, [`github.com/mpperrusquia-ui/thinkwestky-data`](https://github.com/mpperrusquia-ui/thinkwestky-data) | `mpperrusquia-ui` | Holds the code, the refresh schedule, and the API keys (as secrets) |
 | Hosting | Cloudflare Pages, `dash.cloudflare.com` | _fill in_ | Connected to the GitHub repo; redeploys on every commit |
 | DNS for `data.thinkwestky.org` | Wherever thinkwestky.org's DNS is managed | _fill in_ | One CNAME record pointing at the Pages URL |
 | BLS API key | [data.bls.gov/registrationEngine](https://data.bls.gov/registrationEngine/) | _fill in_ | Free. Key is emailed to the registering address |
 | Census API key | [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) | _fill in_ | Free. Key is emailed to the registering address |
 
-To get access: whoever holds the GitHub account invites you as a collaborator
+To get access: the repo owner (`mpperrusquia-ui`) invites you as a collaborator
 (repo → Settings → Collaborators). Cloudflare access is under Manage Account → Members.
 
 ---
