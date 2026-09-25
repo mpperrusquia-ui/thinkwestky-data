@@ -1,0 +1,87 @@
+name: Refresh data
+
+on:
+  schedule:
+    # 5th of each month, 12:00 UTC. BLS county data for month N lands in early
+    # month N+2, so running more often gains nothing.
+    - cron: '0 12 5 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test validation rules
+        run: npm test
+
+      - name: Fetch data
+        id: fetch
+        env:
+          BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
+        run: |
+          set +e
+          node scripts/fetch-data.js 2>&1 | tee refresh.log
+          code=${PIPESTATUS[0]}
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          # 0 = fresh, 2 = written with stale sources; both are committed below.
+          [ "$code" = 0 ] || [ "$code" = 2 ]
+
+      - name: Commit data.json if it changed
+        if: steps.fetch.outcome == 'success'
+        run: |
+          if git diff --quiet -- data/data.json; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/data.json
+          git commit -m "Refresh data ($(date -u +%Y-%m-%d))"
+          git push
+
+      - name: Report failure in a GitHub issue
+        if: always() && (failure() || steps.fetch.outputs.code == '2')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Data refresh failed"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ "${{ steps.fetch.outputs.code }}" = "2" ]; then
+            summary="Some sources failed. The page still shows their previous values, marked **stale**."
+          else
+            summary="The refresh stopped and **data.json was not updated**. The page keeps showing last month's figures."
+          fi
+          {
+            echo "$summary"
+            echo
+            echo "Run: $run_url"
+            echo
+            echo '```'
+            tail -n 60 refresh.log 2>/dev/null || echo "(no log; the job failed before fetching)"
+            echo '```'
+            echo
+            echo "See README.md → \"When the refresh fails\"."
+          } > body.md
+          gh label create refresh-failure --color d73a4a --description "Monthly data refresh problem" 2>/dev/null || true
+          existing=$(gh issue list --label refresh-failure --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create --title "$title" --label refresh-failure --body-file body.md
+          fi

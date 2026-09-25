@@ -1,0 +1,12 @@
+{
+  "name": "thinkwestky-data",
+  "private": true,
+  "description": "Fulton and Hickman County, KY workforce and demographic data page",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "refresh": "node scripts/fetch-data.js",
+    "test": "node --test scripts/fetch-data.test.js",
+    "serve": "python3 -m http.server 8080"
+  }
+}

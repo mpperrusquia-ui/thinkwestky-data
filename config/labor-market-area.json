@@ -1,0 +1,7 @@
+{
+  "_comment": "Counties in the regional labor market area. Leave confirmed: false until the West Kentucky Workforce Board confirms the list; the page omits the section until then. Each county needs name, state (KY/TN), and 5-digit FIPS.",
+  "confirmed": false,
+  "confirmed_by": "",
+  "confirmed_on": "",
+  "counties": []
+}

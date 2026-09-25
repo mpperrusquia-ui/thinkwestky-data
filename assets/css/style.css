@@ -1,0 +1,233 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat-latin-wght.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+:root {
+  --navy: #1a428a;
+  --navy-dark: #12306a;
+  --red: #f5333f;
+  --red-ink: #c8202b;
+  --ink: #242427;
+  --ink-2: #4a4c52;
+  --muted: #6c6d74;
+  --line: #e2e3e6;
+  --surface: #ffffff;
+  --page: #f7f7f8;
+  --tint: #eef2f9;
+  --stale-bg: #fff3cd;
+  --stale-ink: #7a5300;
+  --radius: 10px;
+  --font-head: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.55 var(--font-body);
+}
+
+h1, h2, h3 { font-family: var(--font-head); color: var(--navy); line-height: 1.2; margin: 0 0 .5em; }
+h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.01em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+
+a { color: var(--navy); text-underline-offset: 2px; }
+a:hover { color: var(--red-ink); }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; border-radius: 3px; }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; z-index: 10; background: #fff; padding: 8px 12px; }
+
+/* ------------------------------------------------------------ header */
+
+.site-header {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--surface);
+  border-bottom: 3px solid var(--navy);
+  padding-top: env(safe-area-inset-top);
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; }
+.brand img { display: block; height: 44px; width: auto; }
+
+.btn, .btn-csv {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 16px;
+  border-radius: 999px; border: 0;
+  font: 600 .95rem/1 var(--font-head);
+  text-decoration: none; cursor: pointer;
+}
+.btn-contact { background: var(--red); color: #fff; }
+.btn-contact:hover { background: var(--red-ink); color: #fff; }
+
+/* ------------------------------------------------------------ intro + toc */
+
+.intro { padding: 28px 0 8px; }
+.lede { font-size: 1.05rem; color: var(--ink-2); margin: 0 0 8px; max-width: 42em; }
+.updated { color: var(--muted); font-size: .9rem; margin: 0; }
+
+.toc {
+  display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px;
+  scrollbar-width: none;
+}
+.toc::-webkit-scrollbar { display: none; }
+.toc a {
+  flex: none; padding: 8px 14px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line);
+  font-size: .9rem; text-decoration: none; color: var(--ink-2);
+}
+.toc a:hover { border-color: var(--navy); color: var(--navy); }
+
+/* ------------------------------------------------------------ sections */
+
+main section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  margin: 16px 0;
+}
+section[hidden] { display: none; }
+
+.loading, .na { color: var(--muted); }
+
+.cards { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+.card {
+  background: var(--tint); border-radius: var(--radius); padding: 16px;
+  border-left: 4px solid var(--navy);
+}
+.card h3 { margin-bottom: 10px; }
+.card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; }
+.card dt { font-size: .8rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.card dd { margin: 2px 0 0; font: 800 1.9rem/1.1 var(--font-head); color: var(--ink); font-variant-numeric: tabular-nums; }
+.card dd .stale-tag { font-size: .7rem; vertical-align: middle; }
+.card-period { margin: 10px 0 0; font-size: .85rem; color: var(--muted); }
+
+.cta {
+  background: var(--navy); color: #fff; border-radius: var(--radius);
+  padding: 18px 16px; margin: 16px 0;
+}
+.cta p { margin: 0 0 10px; }
+.cta a { color: #fff; font-weight: 700; }
+.cta-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 !important; }
+
+/* ------------------------------------------------------------ tables */
+
+.table-block { margin: 8px 0 4px; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .95rem; }
+caption { text-align: left; font: 700 .95rem var(--font-head); color: var(--ink); padding-bottom: 8px; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+thead th { font-size: .8rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .03em; border-bottom: 2px solid var(--navy); white-space: nowrap; }
+tbody th { font-weight: 500; }
+th:first-child, td:first-child { padding-left: 0; }
+.num { text-align: right; white-space: nowrap; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+.btn-csv {
+  margin-top: 10px; min-height: 40px; padding: 0 14px;
+  background: var(--surface); color: var(--navy);
+  border: 1.5px solid var(--navy); font-size: .85rem;
+}
+.btn-csv::before { content: '↓'; margin-right: 6px; }
+.btn-csv:hover { background: var(--navy); color: #fff; }
+
+.asof { font-size: .82rem; color: var(--muted); margin: 14px 0 0; }
+.asof-label { font-weight: 600; color: var(--ink-2); }
+.asof a { color: var(--ink-2); }
+
+.stale { color: var(--stale-ink); }
+.stale-tag {
+  display: inline-block; padding: 1px 6px; border-radius: 4px;
+  background: var(--stale-bg); color: var(--stale-ink); border: 1px solid #e6c65a;
+  font: 600 .72rem/1.4 var(--font-body); white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ chart */
+
+.chart { margin: 0 0 20px; }
+.legend { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 0; margin: 0 0 8px; font-size: .85rem; color: var(--ink-2); }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.chart-box { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.chart .grid { stroke: #ececef; stroke-width: 1; }
+.chart .grid.base { stroke: #b4b5ba; }
+.chart .tick { font: 12px var(--font-body); fill: var(--muted); }
+.chart .series path { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .series circle { stroke: var(--surface); stroke-width: 2; }
+.chart .end-label { font: 600 12px var(--font-body); fill: var(--ink-2); }
+.chart .crosshair { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart figcaption { font-size: .82rem; color: var(--muted); margin-top: 4px; }
+.tooltip {
+  position: absolute; top: 8px; pointer-events: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / .12); padding: 8px 10px; font-size: .82rem; min-width: 150px;
+}
+.tooltip strong { display: block; margin-bottom: 4px; }
+.tooltip span { display: flex; align-items: center; gap: 6px; }
+.tooltip i { width: 10px; height: 3px; border-radius: 2px; }
+.tooltip b { margin-left: auto; padding-left: 12px; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------ contact + footer */
+
+.contact { border-top: 4px solid var(--red) !important; }
+.contact-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
+.contact-list li { display: flex; gap: 12px; align-items: baseline; font-size: 1.1rem; }
+.contact-list .label { width: 4.5em; flex: none; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+.contact-list a { font-weight: 700; }
+
+.site-footer { padding: 24px 0 calc(40px + env(safe-area-inset-bottom)); color: var(--ink-2); font-size: .88rem; }
+.site-footer h2 { font-size: 1rem; color: var(--ink); }
+.sources { padding-left: 18px; margin: 0 0 12px; }
+.sources li { margin-bottom: 6px; }
+.fine { color: var(--muted); }
+
+/* ------------------------------------------------------------ wider screens */
+
+@media (min-width: 640px) {
+  h1 { font-size: 2.2rem; }
+  main section { padding: 28px; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 28px; }
+  .cta p { margin: 0; }
+  .brand img { height: 52px; }
+}
+
+/* ------------------------------------------------------------ print */
+
+@media print {
+  @page { margin: 14mm 12mm; }
+  body { background: #fff; font-size: 10.5pt; }
+  .site-header { position: static; border-bottom: 2px solid var(--navy); }
+  .btn-contact, .toc, .btn-csv, .skip, .tooltip, noscript { display: none !important; }
+  .wrap { max-width: none; padding: 0; }
+  .intro { padding-top: 12px; }
+  main section { border: 0; padding: 0; margin: 18px 0 0; break-inside: avoid; }
+  #history { break-inside: auto; }
+  .chart, .table-block, .cards { break-inside: avoid; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .card { border: 1px solid var(--line); border-left: 4px solid var(--navy); }
+  .card dd { font-size: 1.5rem; }
+  .cta { background: none; color: var(--ink); border: 1.5px solid var(--navy); display: block; }
+  .cta a { color: var(--navy); }
+  .contact { border: 1.5px solid var(--red) !important; padding: 12px !important; }
+  .asof a::after, .sources a::after { content: ' (' attr(href) ')'; font-weight: normal; word-break: break-all; }
+  .stale-tag { border: 1px solid #000; background: none; color: #000; }
+  a { color: inherit; text-decoration: none; }
+  .site-footer[data-printed]::after {
+    content: 'Printed ' attr(data-printed) ' from the Fulton-Hickman Counties EDP data page.';
+    display: block; margin-top: 8px; color: var(--muted);
+  }
+}

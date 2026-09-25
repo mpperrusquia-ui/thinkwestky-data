@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fulton &amp; Hickman County Data | Fulton-Hickman Counties EDP</title>
+  <meta name="description" content="Current labor force, unemployment, demographic, and school data for Fulton County and Hickman County, Kentucky, updated monthly from the U.S. Bureau of Labor Statistics and Census Bureau.">
+  <meta name="theme-color" content="#1a428a">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/montserrat-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="https://thinkwestky.org/">
+        <img src="assets/logo.svg" alt="Fulton-Hickman Counties Economic Development Partnership" width="176" height="60">
+      </a>
+      <a class="btn btn-contact" href="#contact">Contact us</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <div class="intro">
+        <h1>Fulton &amp; Hickman County Data</h1>
+        <p class="lede">Workforce and community figures for Fulton County and Hickman County, Kentucky, pulled each month from federal sources. Every figure lists its source and date.</p>
+        <p class="updated" id="updated"></p>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <a href="#workforce">Workforce</a>
+        <a href="#history">Unemployment history</a>
+        <a href="#region" id="toc-region" hidden>Labor market area</a>
+        <a href="#demographics">Demographics</a>
+        <a href="#schools">Schools</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <section id="workforce" aria-labelledby="workforce-h">
+        <h2 id="workforce-h">Workforce</h2>
+        <div data-render="workforce"><p class="loading">Loading figures…</p></div>
+      </section>
+
+      <aside class="cta" aria-label="Contact the EDP">
+        <p><strong>Evaluating a site in Fulton or Hickman County?</strong> We can put together labor, utility, and site details for your project.</p>
+        <p class="cta-links">
+          <a href="mailto:director@thinkwestky.org">director@thinkwestky.org</a>
+          <a href="tel:+12709702170">270-970-2170</a>
+        </p>
+      </aside>
+
+      <section id="history" aria-labelledby="history-h">
+        <h2 id="history-h">Unemployment history</h2>
+        <div data-render="history"></div>
+      </section>
+
+      <section id="region" aria-labelledby="region-h" hidden>
+        <h2 id="region-h">Regional labor market area</h2>
+        <div data-render="region"></div>
+      </section>
+
+      <section id="demographics" aria-labelledby="demographics-h">
+        <h2 id="demographics-h">Demographics</h2>
+        <div data-render="demographics"></div>
+      </section>
+
+      <section id="schools" aria-labelledby="schools-h">
+        <h2 id="schools-h">Schools</h2>
+        <div data-render="schools"></div>
+      </section>
+
+      <section id="contact" class="contact" aria-labelledby="contact-h">
+        <h2 id="contact-h">Contact</h2>
+        <p>The Fulton-Hickman Counties Economic Development Partnership helps companies find sites, workforce, and incentives in far western Kentucky. Ask us for anything you don't see here.</p>
+        <ul class="contact-list">
+          <li><span class="label">Email</span> <a href="mailto:director@thinkwestky.org">director@thinkwestky.org</a></li>
+          <li><span class="label">Phone</span> <a href="tel:+12709702170">270-970-2170</a></li>
+          <li><span class="label">Web</span> <a href="https://thinkwestky.org/">thinkwestky.org</a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <h2>Sources</h2>
+      <ul class="sources">
+        <li><a href="https://www.bls.gov/lau/">U.S. Bureau of Labor Statistics, Local Area Unemployment Statistics</a>. County, Kentucky, and U.S. figures are not seasonally adjusted.</li>
+        <li><a href="https://www.census.gov/programs-surveys/acs">U.S. Census Bureau, American Community Survey 5-Year Estimates</a><span id="acs-vintage"></span>.</li>
+        <li><a href="https://nces.ed.gov/ccd/">National Center for Education Statistics, Common Core of Data</a>, accessed through the <a href="https://educationdata.urban.org/">Urban Institute Education Data Portal</a>.</li>
+      </ul>
+      <p class="fine">Figures are refreshed automatically each month. A value marked <span class="stale-tag">Not updated</span> could not be refreshed from its source and shows the last good figure. Public-domain data; please cite the sources above when reusing.</p>
+      <p class="fine"><a href="https://thinkwestky.org/">Back to thinkwestky.org</a></p>
+    </div>
+  </footer>
+
+  <noscript><p class="wrap">This page needs JavaScript to display its figures. Contact <a href="mailto:director@thinkwestky.org">director@thinkwestky.org</a> or 270-970-2170 for current data.</p></noscript>
+</body>
+</html>
