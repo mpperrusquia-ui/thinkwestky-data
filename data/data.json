@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-25T17:46:56Z",
+  "generated": "2026-09-25T17:48:38Z",
   "metrics": {
     "fulton.employed": {
       "value": 2353,
@@ -268,6 +268,96 @@
       "stale": false,
       "dataset": "bls",
       "series": "LAUST210000000000003"
+    },
+    "schools.fulton_county.enrollment": {
+      "value": 611,
+      "unit": "students",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment"
+    },
+    "schools.fulton_county.student_teacher_ratio": {
+      "value": 13.6,
+      "unit": "ratio",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment / teachers_total_fte"
+    },
+    "schools.fulton_county.teachers_fte": {
+      "value": 45,
+      "unit": "fte",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "teachers_total_fte"
+    },
+    "schools.fulton_independent.enrollment": {
+      "value": 293,
+      "unit": "students",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment"
+    },
+    "schools.fulton_independent.student_teacher_ratio": {
+      "value": 16.3,
+      "unit": "ratio",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment / teachers_total_fte"
+    },
+    "schools.fulton_independent.teachers_fte": {
+      "value": 18,
+      "unit": "fte",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "teachers_total_fte"
+    },
+    "schools.hickman_county.enrollment": {
+      "value": 759,
+      "unit": "students",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment"
+    },
+    "schools.hickman_county.student_teacher_ratio": {
+      "value": 13.8,
+      "unit": "ratio",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "enrollment / teachers_total_fte"
+    },
+    "schools.hickman_county.teachers_fte": {
+      "value": 55,
+      "unit": "fte",
+      "period": "2024-25",
+      "source": "NCES Common Core of Data, via Urban Institute Education Data Portal",
+      "source_url": "https://educationdata.urban.org/documentation/school-districts.html",
+      "stale": false,
+      "dataset": "schools",
+      "series": "teachers_total_fte"
     },
     "us.unemployment_rate_annual.2020": {
       "value": 8.1,
