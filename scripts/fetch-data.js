@@ -84,7 +84,11 @@ async function fetchJson(url, { method = 'GET', body, timeoutMs = 120_000, retri
     try {
       const res = await fetch(url, {
         method,
-        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        headers: {
+          // Some APIs (educationdata.urban.org) reject Node's default "node" user agent.
+          'User-Agent': USER_AGENT,
+          ...(body && { 'Content-Type': 'application/json' }),
+        },
         body: body ? JSON.stringify(body) : undefined,
         redirect: 'manual', // Census redirects to an HTML page on key errors
         signal: AbortSignal.timeout(timeoutMs),
@@ -101,6 +105,8 @@ async function fetchJson(url, { method = 'GET', body, timeoutMs = 120_000, retri
   }
   throw new Error(`${redact(url)}: ${lastErr.message}`);
 }
+
+const USER_AGENT = 'thinkwestky-data-refresh/1.0 (+https://github.com/mpperrusquia-ui/thinkwestky-data)';
 
 const redact = (url) => url.replace(/([?&]key=)[^&]+/, '$1***');
 
