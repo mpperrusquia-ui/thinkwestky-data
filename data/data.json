@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-25T17:48:38Z",
+  "generated": "2026-09-26T03:59:06Z",
   "metrics": {
     "fulton.employed": {
       "value": 2353,
@@ -22,6 +22,86 @@
       "dataset": "bls",
       "series": "LAUCN210750000000006",
       "note": "preliminary"
+    },
+    "fulton.median_age": {
+      "value": 40.9,
+      "unit": "years",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B01002_001E"
+    },
+    "fulton.median_home_value": {
+      "value": 79100,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B25077_001E"
+    },
+    "fulton.median_household_income": {
+      "value": 38217,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B19013_001E"
+    },
+    "fulton.pct_bachelors_or_higher": {
+      "value": 16.1,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "S1501_C02_015E"
+    },
+    "fulton.pct_hs_or_higher": {
+      "value": 85.9,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "S1501_C02_014E"
+    },
+    "fulton.per_capita_income": {
+      "value": 21434,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B19301_001E"
+    },
+    "fulton.population": {
+      "value": 6409,
+      "unit": "persons",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B01003_001E"
+    },
+    "fulton.poverty_rate": {
+      "value": 22.6,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B17001_002E / B17001_001E"
     },
     "fulton.unemployed": {
       "value": 151,
@@ -126,6 +206,86 @@
       "dataset": "bls",
       "series": "LAUCN211050000000006",
       "note": "preliminary"
+    },
+    "hickman.median_age": {
+      "value": 45.2,
+      "unit": "years",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B01002_001E"
+    },
+    "hickman.median_home_value": {
+      "value": 115700,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B25077_001E"
+    },
+    "hickman.median_household_income": {
+      "value": 60867,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B19013_001E"
+    },
+    "hickman.pct_bachelors_or_higher": {
+      "value": 15.1,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "S1501_C02_015E"
+    },
+    "hickman.pct_hs_or_higher": {
+      "value": 85.6,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "S1501_C02_014E"
+    },
+    "hickman.per_capita_income": {
+      "value": 32313,
+      "unit": "dollars",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B19301_001E"
+    },
+    "hickman.population": {
+      "value": 4439,
+      "unit": "persons",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B01003_001E"
+    },
+    "hickman.poverty_rate": {
+      "value": 20.5,
+      "unit": "percent",
+      "period": "2020-2024",
+      "source": "U.S. Census Bureau, American Community Survey 5-Year Estimates, 2020–2024",
+      "source_url": "https://api.census.gov/data/2024/acs/acs5",
+      "stale": false,
+      "dataset": "census",
+      "series": "B17001_002E / B17001_001E"
     },
     "hickman.unemployed": {
       "value": 108,
