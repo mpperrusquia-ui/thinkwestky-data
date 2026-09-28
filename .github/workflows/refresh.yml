@@ -19,6 +19,8 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,6 +45,7 @@ jobs:
           [ "$code" = 0 ] || [ "$code" = 2 ]
 
       - name: Commit data.json if it changed
+        id: commit
         if: steps.fetch.outcome == 'success'
         run: |
           if git diff --quiet -- data/data.json; then
@@ -54,6 +57,7 @@ jobs:
           git add data/data.json
           git commit -m "Refresh data ($(date -u +%Y-%m-%d))"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Report failure in a GitHub issue
         if: always() && (failure() || steps.fetch.outputs.code == '2')
@@ -85,3 +89,14 @@ jobs:
           else
             gh issue create --title "$title" --label refresh-failure --body-file body.md
           fi
+
+  # Publish the new data. The commit above uses the workflow's own token,
+  # which doesn't trigger pages.yml's push event, so call it directly.
+  deploy:
+    needs: refresh
+    if: needs.refresh.outputs.changed == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml

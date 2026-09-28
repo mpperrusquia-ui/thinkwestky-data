@@ -1,0 +1,46 @@
+name: Deploy site
+
+# Publishes the site to GitHub Pages. Runs on every push to main, and is also
+# called by refresh.yml after it commits new data (commits made by the
+# workflow's own token don't trigger push events).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main # the latest commit, including data just committed by refresh.yml
+
+      # Publish only the public site, not scripts, config, or the README.
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -R index.html manifest.webmanifest sw.js robots.txt assets data _site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

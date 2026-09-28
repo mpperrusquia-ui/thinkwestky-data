@@ -12,28 +12,28 @@ shows where it came from and what period it covers.
 
 It can be installed as an app on a phone ("Add to Home Screen") and works offline.
 
-- **Live URL:** `https://data.thinkwestky.org` *(fill in once DNS is set up; until then the `*.pages.dev` URL from Cloudflare)*
-- **Hosting:** Cloudflare Pages (free), deploys automatically from this GitHub repository
+- **Live URL:** <https://mpperrusquia-ui.github.io/thinkwestky-data/> (moves to `https://data.thinkwestky.org` once DNS is set up)
+- **Hosting:** GitHub Pages (free), published automatically from this repository
 - **Cost:** $0. No server, no database, no paid services.
 
 ---
 
 ## Accounts and access
 
-The code lives on the GitHub account `mpperrusquia-ui`, which maintains the
-project. Hosting and API-key accounts should use an EDP-controlled email address,
-such as `director@thinkwestky.org`, so the EDP can always reach the live site.
+The code, the monthly job, and the hosting all live on the GitHub account
+`mpperrusquia-ui`, which maintains the project. API keys are registered to an
+email address; an EDP address such as `director@thinkwestky.org` keeps them
+recoverable.
 
 | What | Where | Account holder | Notes |
 |---|---|---|---|
-| Code + monthly job | GitHub, [`github.com/mpperrusquia-ui/thinkwestky-data`](https://github.com/mpperrusquia-ui/thinkwestky-data) | `mpperrusquia-ui` | Holds the code, the refresh schedule, and the API keys (as secrets) |
-| Hosting | Cloudflare Pages, `dash.cloudflare.com` | _fill in_ | Connected to the GitHub repo; redeploys on every commit |
-| DNS for `data.thinkwestky.org` | Wherever thinkwestky.org's DNS is managed | _fill in_ | One CNAME record pointing at the Pages URL |
+| Code, monthly job, hosting | GitHub, [`github.com/mpperrusquia-ui/thinkwestky-data`](https://github.com/mpperrusquia-ui/thinkwestky-data) | `mpperrusquia-ui` | Holds the code, the refresh schedule, the API keys (as secrets), and the GitHub Pages site |
+| DNS for `data.thinkwestky.org` | Wherever thinkwestky.org's DNS is managed | _fill in_ | One CNAME record: `data` → `mpperrusquia-ui.github.io` |
 | BLS API key | [data.bls.gov/registrationEngine](https://data.bls.gov/registrationEngine/) | _fill in_ | Free. Key is emailed to the registering address |
 | Census API key | [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) | _fill in_ | Free. Key is emailed to the registering address |
 
 To get access: the repo owner (`mpperrusquia-ui`) invites you as a collaborator
-(repo → Settings → Collaborators). Cloudflare access is under Manage Account → Members.
+(repo → Settings → Collaborators).
 
 ---
 
@@ -44,7 +44,7 @@ To get access: the repo owner (`mpperrusquia-ui`) invites you as a collaborator
 BLS, Census,  ──► scripts/fetch-data.js ──► checks ──► data/data.json ──► commit
 Urban/NCES                                                     │
                                                                ▼
-                                          Cloudflare Pages redeploys the site
+                                          GitHub Pages republishes the site
                                                                │
                                                                ▼
                                    index.html reads data/data.json in the browser
@@ -67,6 +67,7 @@ Urban/NCES                                                     │
 | `scripts/fetch-data.test.js` | Tests for the checks (`npm test`) |
 | `scripts/make-icons.js` | Regenerates the app icons |
 | `.github/workflows/refresh.yml` | The monthly schedule |
+| `.github/workflows/pages.yml` | Publishes the site to GitHub Pages on every change |
 | `sw.js`, `manifest.webmanifest` | Offline and install support |
 
 ---
@@ -227,19 +228,27 @@ IDs: Fulton County `2102100`, Fulton Independent `2102070`, Hickman County `2102
 
 ## Deployment
 
-### Cloudflare Pages (first-time setup)
+### GitHub Pages
 
-1. Create the GitHub repo under the EDP's account and push this code.
-2. Add repository secrets `BLS_API_KEY` and `CENSUS_API_KEY`.
-3. Run **Actions → Refresh data** once to fill in `data/data.json`.
-4. Cloudflare → **Workers & Pages** → **Create** → **Pages** → connect the GitHub repo.
-   Build command: *(none)*. Output directory: `/`.
-5. **Custom domains** → add `data.thinkwestky.org`, then add the CNAME record
-   Cloudflare shows you at thinkwestky.org's DNS provider.
-6. Add a menu link on thinkwestky.org (YOOtheme menu) pointing to the new address.
+The site is published by `.github/workflows/pages.yml` (repo → Settings →
+Pages → Source: **GitHub Actions**). It runs on every push to `main`, and
+`refresh.yml` calls it after committing new data. Only the public files are
+published (`index.html`, `assets/`, `data/`, `sw.js`, `manifest.webmanifest`,
+`robots.txt`); scripts, config, and this README are not.
+
+To redeploy by hand: **Actions → Deploy site → Run workflow**.
+
+### Custom domain (`data.thinkwestky.org`)
+
+1. At thinkwestky.org's DNS provider, add a **CNAME** record: name `data`,
+   value `mpperrusquia-ui.github.io`.
+2. Repo → **Settings → Pages → Custom domain**: enter `data.thinkwestky.org`,
+   save, and tick **Enforce HTTPS** once GitHub has issued the certificate
+   (usually within an hour).
+3. Recommended: verify the domain under your GitHub profile → Settings →
+   Pages, so no one else can claim `data.thinkwestky.org` on GitHub.
+4. Add a menu link on thinkwestky.org (YOOtheme menu) pointing to the new address.
    Don't embed it in an iframe; iframes behave poorly on phones.
-
-GitHub Pages works too (Settings → Pages → deploy from `main`, root folder).
 
 ### Run it locally
 
